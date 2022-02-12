@@ -1,9 +1,12 @@
 #pragma once
+
 #ifndef __clang__
-#error Obviously, this code requires clang compiler. How about clang-cl ?
+#error Obviously, this code requires clang compiler. How about clang-cl?
 #else
 #pragma clang system_header
 #endif  // __clang__
+
+#include "dbj_dll_wall_of_macros.h"
 /*
 (c)  2021-2022 by dbj at dbj dot org, https://dbj.org/license_dbj
 
