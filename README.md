@@ -6,12 +6,12 @@
 
 Simple (kind-of-a) Component architecture, design and implementation.  Using the [DLL concept and mechanism as implemented in Windows](https://en.wikipedia.org/wiki/Dynamic-link_library).
 
-Component is a software building block.
+Component is a software building block. Some more formal details in [here](https://www.guru99.com/component-diagram-uml-example.html), please.
 
-## But, what is the component?
+## But, what is this "dbj component"?
 
-- one component is one executable
-- one component has and implements one interface
+- one dbj component is one dll
+- one dbj component has and implements one interface
 - interface is a collection of functions and types 
 
 All that seems very OO. That is because it is. Those are the foundations of OO.
@@ -25,6 +25,8 @@ The concept of "information hiding". (Hide the implementation complexity) Archit
 - C is the language of Windows
 - One C struct is the interface on one DBJ DLL Component
 - Function pointers on that struct are interface functions.
+
+![](media/dbj_uml_component.png)
 
 ## Wot? Is that all?!
 
