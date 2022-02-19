@@ -80,6 +80,8 @@ Platforms.
 
 Following are the hardcoded names each and every dbj dll uses. By now that is obvious.
 
+DBJCS prefix means "DBJ Component System". Let's say that is internal prefix.
+
 */
 #define DBJCS_CAN_UNLOAD_NOW_STR "dbj_dll_component_can_unload_now"
 #define DBJCS_INTEFACE_FACTORY_STR "dbj_dll_interface_factory"

@@ -52,33 +52,45 @@ static inline HINSTANCE dbj_dll_load(
 
 /*
 one is hoping OS is caching the dll + function, in memory for the next call;
-returns null on error
+on error return null
 */
-static inline void *dbj_dll_get_factory_function(HINSTANCE *dll_handle_, char const fun_name_[static 1])
+static inline void *dbj_dll_get_factory_function(HINSTANCE *dll_handle_)
 {
     // Funny fact: GetProcAddress has no unicode equivalent
     FARPROC result =
-        GetProcAddress((HINSTANCE)*dll_handle_, fun_name_);
+        GetProcAddress((HINSTANCE)*dll_handle_, DBJCS_INTEFACE_FACTORY_STR);
     if (result == 0)
     {
-        DBJ_DBG_PRINT("\nFailed to find the address for a function: '%s'\n", fun_name_);
+      DBJ_DBG_PRINT("\nFailed to find the address for a function: '%s'\n",
+                    DBJCS_INTEFACE_FACTORY_STR);
     }
     return result;
 }
 
+// there are only 3 functions def-ined for each and any dbj dll component
+// so this is not going to be used very often, and probably never by users
+static inline void *dbj_dll_get_any_function(HINSTANCE *dll_handle_, const char fname_[static 1]) {
+  // Funny fact: GetProcAddress has no unicode equivalent
+  FARPROC result = GetProcAddress((HINSTANCE)*dll_handle_, fname_);
+  if (result == 0) {
+    DBJ_DBG_PRINT("\nFailed to find the address for a function: '%s'\n",
+                  fname_);
+  }
+  return result;
+}
+
+// this is just for debug builds
 // returns EINVAL on erro, 0 on OK
-static inline int dbj_dll_version_report(HINSTANCE dll_handle_, const unsigned name_len, const char dll_name[const static name_len])
+static inline int dbj_dll_version_report(HINSTANCE dll_handle_, const char dll_name[static 1])
 {
     // using the version info is exactly the same for every DBJ Component
     DBJ_COMPONENT_SEMVER_FP get_version =
-        (DBJ_COMPONENT_SEMVER_FP)dbj_dll_get_factory_function(
+        (DBJ_COMPONENT_SEMVER_FP)dbj_dll_get_any_function(
             &dll_handle_, DBJCS_COMPONENT_VERSION_STR);
 
     if (!get_version)
     {
-      DBJ_DBG_PRINT(
-          "\nCould not find function by name "
-          "'%s' " DBJCS_COMPONENT_VERSION_STR);
+     // error is already reported (in debug builds), so just leave
         return EINVAL;
     }
     struct dbj_component_version_ info_ = get_version();
@@ -90,16 +102,15 @@ static inline int dbj_dll_version_report(HINSTANCE dll_handle_, const unsigned n
 
 // returns EXIT_FAILURE on error
 // returns EXIT_SUCCESS on OK
-static inline int dbj_light_unload_dll(HINSTANCE dll_handle_, const unsigned name_len, const char dll_name[const static name_len])
+static inline int dbj_dll_unload_dll(HINSTANCE dll_handle_, const char dll_name[static 1])
 {
     // unloading is also exactly the same for every DBJ Component
     DBJ_COMPONENT_UNLOAD_FP can_unload =
-        (DBJ_COMPONENT_UNLOAD_FP)dbj_dll_get_factory_function(&dll_handle_,
-                                                      DBJCS_CAN_UNLOAD_NOW_STR);
+        (DBJ_COMPONENT_UNLOAD_FP)
+        dbj_dll_get_any_function(&dll_handle_, DBJCS_CAN_UNLOAD_NOW_STR);
     if (!can_unload)
     {
-      DBJ_DBG_PRINT("\nCan not get the function by name : %s\n",
-                    DBJCS_CAN_UNLOAD_NOW_STR);
+      // error is already reported, just return with failure
         return EXIT_FAILURE;
     }
 
@@ -112,10 +123,12 @@ static inline int dbj_light_unload_dll(HINSTANCE dll_handle_, const unsigned nam
     return EXIT_SUCCESS;
 }
 
+#if 0
+
 /*
 
 DBJ DLL factory function returns a pointer to the inteface implementations
-It differs between concrete dbj DLL's becuase it returns a pointer to the struct
+It differs between concrete dbj DLL's because it returns a pointer to the struct
 that represents the concrete component interface.
 
 obtain the pointer to the interface factory, example:
@@ -126,7 +139,6 @@ obtain the pointer to the interface factory, example:
 #define DBJ_DLL_IFP(FP_, N_, DLLHANDLE_) \
   FP_ N_ = (FP_)dbj_dll_get_factory_function(&DLLHANDLE_, DBJCS_INTEFACE_FACTORY_STR)
 
-#if 0
 /*
  
  So how do we obtain the type of a method on DBJ DLL interface?  (if we need one)
