@@ -10,14 +10,16 @@ Component is a software building block. Some more formal details in [here](https
 
 ## But, what is this "dbj component"?
 
+![](media/dbj_uml_component.png)
+
 - one dbj component is one dll
 - one dbj component has and implements one interface
 - interface is a collection of functions and types 
 
 All that seems very OO. That is because it is. Those are the foundations of OO.
-The concept of "information hiding". (Hide the implementation complexity) Architected, designed and implemented following the "Encapsulation and Decoupling" principle (easily moved, swapped or changed). Without the unfortunate cruft piled up through the OO history of misunderstanding.
+The concept of "information hiding". (Hide the implementation complexity) Architected, designed and implemented following the "Encapsulation and Decoupling" principle (easily moved, swapped or changed). Without the unfortunate cruft piled up through the OO history of misunderstandings.
 
-[That link above](https://en.wikipedia.org/wiki/Dynamic-link_library), leads to a good text on DLL's and concept and benefits included. Please read it.
+[That link above](https://en.wikipedia.org/wiki/Dynamic-link_library), leads to a good text on DLL's and concept and benefits included. Please read it. Recap:
 
 ## Operational requirements
 
@@ -25,8 +27,6 @@ The concept of "information hiding". (Hide the implementation complexity) Archit
 - C is the language of Windows
 - One C struct is the interface on one DBJ DLL Component
 - Function pointers on that struct are interface functions.
-
-![](media/dbj_uml_component.png)
 
 ## Wot? Is that all?!
 
@@ -67,7 +67,7 @@ else
  #define DBJSYSLOGCLIENT_DLL_NAME \
  "dbjsyslogclient.dll"
  ```
- Errors are already reported; if any. In debug builds one can see them in the debugger console. Thus no need for the console application debug builds. Next, onto the normal usage.
+ In debug builds errors are already reported; if any. One can see them in the debugger console. Thus no need for the console application debug builds. Just debug step using Visual Studio or VS Code. Next, onto the normal usage.
  ```cpp
   // 1. obtain the factory function
   dbjsyslog_client_ifp dll_factory_ =
@@ -77,7 +77,7 @@ else
 
   assert(dll_factory_);
  ```
- Factory function alway has the same name, as defined in the always repeating dbj dll def file. Here by name we mean name as the string, not the function declaration. Thus above you cast the result to the particular factory function. The only role of it is to return the single interface pointer implemented inside the component.
+ Factory function alway has the same name, as defined in the always repeating [dbj dll def file](copy_rename_to_individual_components.def). Here by name we mean name as the string, not the function declaration. Thus above you cast the result to the particular factory function pointer type. The only role of it is to return the single interface pointer implemented inside the component.
  ```cpp
 // 2. call the factory function to obtain the interface
 // pointer; no more casting
