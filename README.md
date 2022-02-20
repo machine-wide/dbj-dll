@@ -114,7 +114,10 @@ Two are important:
 
 More simple and effective real life examples of both implementation and usage are coming soon.
 
-There are few pretty useful DBJ DLL Components elsewhere, to which projects, links will be inserted here. 
+There are already few pretty useful DBJ DLL Components: 
+
+- https://github.com/dbj-data/dbjsysloglib
+
 
 > Linux shared objects are on the roadmap.
 
