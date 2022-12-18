@@ -4,7 +4,7 @@
 
 ## DBJ DLL Component
 
-Simple (kind-of-a) Component architecture, design and implementation.  Using the [DLL concept and mechanism as implemented in Windows](https://en.wikipedia.org/wiki/Dynamic-link_library).
+Simple but real Component architecture, design and implementation.  Using the [DLL concept and mechanism as implemented in Windows](https://en.wikipedia.org/wiki/Dynamic-link_library).
 
 Component is a software building block. Some more formal details in [here](https://www.guru99.com/component-diagram-uml-example.html), please.
 
