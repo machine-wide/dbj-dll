@@ -40,6 +40,8 @@ DBJ DLL functions and macros are prefixed with `dbj_dll_`.
 
 ```cpp
 // particular component interface 
+// is one C struct in this case
+// implemented in this header
 #include "../dll/dbjsyslogclient.h" 
 
 // dbj dll usage helpers
@@ -77,7 +79,20 @@ else
 
   assert(dll_factory_);
  ```
- Factory function alway has the same name, as defined in the always repeating [dbj dll def file](copy_rename_to_individual_components.def). Here by name we mean name as the string, not the function declaration. Thus above you cast the result to the particular factory function pointer type. The only role of it is to return the single interface pointer implemented inside the component.
+ ### The DBJ Component def file. Must always be part of the project and have this content:
+ 
+ Factory function alway has the same name, as defined in the always repeating [dbj dll def file](copy_rename_to_individual_components.def). Here by name we mean name as the string, not the function declaration.  Let's have it here to:
+  
+ ```
+EXPORTS
+dbj_dll_component_can_unload_now    PRIVATE
+dbj_dll_interface_factory           PRIVATE
+dbj_dll_component_version           PRIVATE
+ ```
+ Those are the required exact names of three functions every DBJ Component has to implement.
+ 
+### Back to explanation 
+Thus above you cast the result to the particular factory function pointer type. The only role of it is to return the single interface pointer implemented inside the component. (and that "interface" is just an plain old  C struct )
  ```cpp
 // 2. call the factory function to obtain the interface
 // pointer; no more casting
